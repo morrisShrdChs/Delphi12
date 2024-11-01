@@ -1,0 +1,90 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  // Класс для проверки, является ли число степенью тройки
+  TPowerOfThreeChecker = class
+  private
+    FNumber: Integer;
+  public
+    constructor Create(ANumber: Integer);
+    function IsPowerOfThree: Integer;
+  end;
+
+  TForm2 = class(TForm)
+    EditK: TEdit;
+    ButtonCheck: TButton;
+    LabelResult: TLabel;
+    procedure ButtonCheckClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form2: TForm2;
+
+implementation
+
+{$R *.dfm}
+
+// Конструктор, который инициализирует число k
+constructor TPowerOfThreeChecker.Create(ANumber: Integer);
+begin
+  FNumber := ANumber;
+end;
+
+// Метод для проверки, является ли число степенью тройки
+function TPowerOfThreeChecker.IsPowerOfThree: Integer;
+var
+  num: Integer;
+begin
+  num := FNumber;
+
+  // Проверяем, является ли число степенью тройки
+  if num < 1 then
+    Exit(0);  // Отрицательные и нулевые числа не могут быть степенями тройки
+
+  while (num mod 3 = 0) do
+    num := num div 3;
+
+  // Если после делений число стало 1, значит оно степень тройки
+  if num = 1 then
+    Result := 1
+  else
+    Result := 0;
+end;
+
+// Обработчик нажатия на кнопку "Проверить"
+procedure TForm2.ButtonCheckClick(Sender: TObject);
+var
+  k: Integer;
+  checker: TPowerOfThreeChecker;
+  resultValue: Integer;
+begin
+  // Обработка некорректного ввода: проверка, что введено целое число
+  if not TryStrToInt(EditK.Text, k) then
+  begin
+    LabelResult.Caption := 'Ошибка: введите корректное число';
+    Exit;
+  end;
+
+  // Создаем объект для проверки числа
+  checker := TPowerOfThreeChecker.Create(k);
+
+  // Выполняем проверку и выводим результат
+  resultValue := checker.IsPowerOfThree;
+  LabelResult.Caption := 't = ' + IntToStr(resultValue);
+
+  // Освобождаем память
+  checker.Free;
+end;
+
+end.
+

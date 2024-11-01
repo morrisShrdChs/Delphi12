@@ -1,0 +1,111 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Math;
+
+type
+  TForm1 = class(TForm)
+    EditX: TEdit;
+    EditY: TEdit;
+    EditZ: TEdit;
+    BtnSin: TButton;
+    BtnCos: TButton;
+    BtnTg: TButton;
+    BtnMax: TButton;
+    BtnMin: TButton;
+    LblResult: TLabel;
+    procedure BtnSinClick(Sender: TObject);
+    procedure BtnCosClick(Sender: TObject);
+    procedure BtnTgClick(Sender: TObject);
+    procedure BtnMaxClick(Sender: TObject);
+    procedure BtnMinClick(Sender: TObject);
+  private
+    { Private declarations }
+    function GetX: Double;
+    function GetY: Double;
+    function GetZ: Double;
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+function TForm1.GetX: Double;
+begin
+  Result := StrToFloat(EditX.Text);
+end;
+
+function TForm1.GetY: Double;
+begin
+  Result := StrToFloat(EditY.Text);
+end;
+
+function TForm1.GetZ: Double;
+begin
+  Result := StrToFloat(EditZ.Text);
+end;
+
+procedure TForm1.BtnSinClick(Sender: TObject);
+var
+  x: Double;
+  u: Double;
+begin
+  x := GetX;
+  u := Sin(x);
+  LblResult.Caption := 'u = sin(x) = ' + FloatToStr(u);
+end;
+
+procedure TForm1.BtnCosClick(Sender: TObject);
+var
+  x: Double;
+  u: Double;
+begin
+  x := GetX;
+  u := Cos(x);
+  LblResult.Caption := 'u = cos(x) = ' + FloatToStr(u);
+end;
+
+procedure TForm1.BtnTgClick(Sender: TObject);
+var
+  x: Double;
+  u: Double;
+begin
+  x := GetX;
+  u := Tan(x);
+  LblResult.Caption := 'u = tg(x) = ' + FloatToStr(u);
+end;
+
+procedure TForm1.BtnMaxClick(Sender: TObject);
+var
+  x, y, z: Double;
+  maxValue: Double;
+begin
+  x := GetX;
+  y := GetY;
+  z := GetZ;
+  maxValue := MaxValue([x, y, z]); // Исправлено использование MaxValue
+  LblResult.Caption := 'max(x, y, z) = ' + FloatToStr(maxValue);
+end;
+
+procedure TForm1.BtnMinClick(Sender: TObject);
+var
+  x, y, z: Double;
+  minValue: Double;
+begin
+  x := Abs(GetX);
+  y := Abs(GetY);
+  z := Abs(GetZ);
+  minValue := MinValue([x, y, z]); // Исправлено использование MinValue
+  LblResult.Caption := 'min(|x|, |y|, |z|) = ' + FloatToStr(minValue);
+end;
+
+end.
+

@@ -1,0 +1,48 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TForm2 = class(TForm)
+    EditK: TEdit;
+    ButtonCheck: TButton;
+    LabelResult: TLabel;
+    Результат: TLabel;
+    procedure ButtonCheckClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form2: TForm2;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.ButtonCheckClick(Sender: TObject);
+var
+  k: Integer;
+  checker: TPowerOfThreeChecker;
+  resultValue: Integer;
+begin
+  // Получаем значение k из поля ввода
+  k := StrToInt(EditK.Text);
+
+  // Создаем экземпляр класса для проверки числа
+  checker := TPowerOfThreeChecker.Create(k);
+
+  // Выполняем проверку и выводим результат
+  resultValue := checker.IsPowerOfThree;
+  LabelResult.Caption := 't = ' + IntToStr(resultValue);
+
+  // Освобождаем память
+  checker.Free;
+end;
+end.

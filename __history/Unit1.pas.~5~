@@ -1,0 +1,88 @@
+unit Unit1;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls;
+
+type
+  // Класс для работы с числом k
+  TPowerOfThreeChecker = class
+  private
+    FNumber: Integer;
+  public
+    constructor Create(ANumber: Integer);
+    function IsPowerOfThree: Integer;
+  end;
+
+  TForm1 = class(TForm)
+    EditK: TEdit;
+    ButtonCheck: TButton;
+    LabelResult: TLabel;
+    Edit1: TEdit;
+    procedure ButtonCheckClick(Sender: TObject);
+    procedure Edit1Change(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+// Конструктор, который инициализирует число k
+constructor TPowerOfThreeChecker.Create(ANumber: Integer);
+begin
+  FNumber := ANumber;
+end;
+
+// Метод для проверки, является ли число степенью тройки
+function TPowerOfThreeChecker.IsPowerOfThree: Integer;
+var
+  num: Integer;
+begin
+  num := FNumber;
+
+  // Проверяем, является ли число степенью тройки
+  if num < 1 then
+    Exit(0);  // Отрицательные и нулевые числа не являются степенями тройки
+
+  while (num mod 3 = 0) do
+    num := num div 3;
+
+  // Если в конце цикла num стало равно 1, то это степень тройки
+  if num = 1 then
+    Result := 1
+  else
+    Result := 0;
+end;
+
+// Обработчик нажатия на кнопку "Проверить"
+procedure TForm1.ButtonCheckClick(Sender: TObject);
+var
+  k: Integer;
+  checker: TPowerOfThreeChecker;
+  resultValue: Integer;
+begin
+  // Получаем значение k из поля ввода
+  k := StrToInt(EditK.Text);
+
+  // Создаем экземпляр класса для проверки числа
+  checker := TPowerOfThreeChecker.Create(k);
+
+  // Выполняем проверку и выводим результат
+  resultValue := checker.IsPowerOfThree;
+  LabelResult.Caption := 't = ' + IntToStr(resultValue);
+
+  // Освобождаем память
+  checker.Free;
+end;
+
+end.
+

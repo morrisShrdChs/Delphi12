@@ -1,0 +1,130 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Math;
+
+type
+  TForm1 = class(TForm)
+    EditX: TEdit;
+    EditY: TEdit;
+    EditZ: TEdit;
+    BtnSin: TButton;
+    BtnCos: TButton;
+    BtnTg: TButton;
+    BtnMax: TButton;
+    BtnMin: TButton;
+    LblResult: TLabel;
+    procedure BtnSinClick(Sender: TObject);
+    procedure BtnCosClick(Sender: TObject);
+    procedure BtnTgClick(Sender: TObject);
+    procedure BtnMaxClick(Sender: TObject);
+    procedure BtnMinClick(Sender: TObject);
+  private
+    { Private declarations }
+    function GetX: Double;
+    function GetY: Double;
+    function GetZ: Double;
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+function TForm1.GetX: Double;
+begin
+  Result := StrToFloatDef(EditX.Text, 0); // Защита от некорректного ввода
+end;
+
+function TForm1.GetY: Double;
+begin
+  Result := StrToFloatDef(EditY.Text, 0); // Защита от некорректного ввода
+end;
+
+function TForm1.GetZ: Double;
+begin
+  Result := StrToFloatDef(EditZ.Text, 0); // Защита от некорректного ввода
+end;
+
+procedure TForm1.BtnSinClick(Sender: TObject);
+var
+  x: Double;
+  u: Double;
+begin
+  x := GetX;
+  u := Sin(x);
+  LblResult.Caption := 'u = sin(x) = ' + FloatToStr(u);
+end;
+
+procedure TForm1.BtnCosClick(Sender: TObject);
+var
+  x: Double;
+  u: Double;
+begin
+  x := GetX;
+  u := Cos(x);
+  LblResult.Caption := 'u = cos(x) = ' + FloatToStr(u);
+end;
+
+procedure TForm1.BtnTgClick(Sender: TObject);
+var
+  x: Double;
+  u: Double;
+begin
+  x := GetX;
+  if Cos(x) = 0 then // Проверка на деление на 0
+    LblResult.Caption := 'Ошибка: tg(x) не определён для x = ' + FloatToStr(x)
+  else
+  begin
+    u := Tan(x);
+    LblResult.Caption := 'u = tg(x) = ' + FloatToStr(u);
+  end;
+end;
+
+procedure TForm1.BtnMaxClick(Sender: TObject);
+var
+  x, y, z: Double;
+  maxValue: Double;
+begin
+  x := GetX;
+  y := GetY;
+  z := GetZ;
+
+  // Находим максимум вручную
+  maxValue := x; // Предполагаем, что x максимальное
+  if y > maxValue then
+    maxValue := y;
+  if z > maxValue then
+    maxValue := z;
+
+  LblResult.Caption := 'max(x, y, z) = ' + FloatToStr(maxValue);
+end;
+
+procedure TForm1.BtnMinClick(Sender: TObject);
+var
+  x, y, z: Double;
+  minValue: Double;
+begin
+  x := Abs(GetX); // Берём модуль
+  y := Abs(GetY); // Берём модуль
+  z := Abs(GetZ); // Берём модуль
+
+  // Находим минимум вручную
+  minValue := x; // Предполагаем, что x минимальное
+  if y < minValue then
+    minValue := y;
+  if z < minValue then
+    minValue := z;
+
+  LblResult.Caption := 'min(|x|, |y|, |z|) = ' + FloatToStr(minValue);
+end;
+
+end.
+

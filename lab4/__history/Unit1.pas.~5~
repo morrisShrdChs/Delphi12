@@ -1,0 +1,72 @@
+unit Unit1;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExcelXP, ComObj;
+
+type
+  TForm1 = class(TForm)
+    Edit1: TEdit;
+    Button1: TButton;
+    procedure Button1Click(Sender: TObject);
+  private
+    procedure ExportToExcel(Digits, Others: string);
+  public
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  InputString: string;
+  Digits, Others: string;
+  i: Integer;
+begin
+  InputString := Edit1.Text;
+  Digits := '';
+  Others := '';
+
+  for i := 1 to Length(InputString) do
+  begin
+    if CharInSet(InputString[i], ['0'..'9']) then
+      Digits := Digits + InputString[i]
+    else
+      Others := Others + InputString[i];
+  end;
+
+  ExportToExcel(Digits, Others);
+end;
+
+procedure TForm1.ExportToExcel(Digits, Others: string);
+var
+  ExcelApp, Workbook, Worksheet: OLEVariant;
+  i: Integer;
+begin
+  try
+    ExcelApp := CreateOleObject('Excel.Application');
+    ExcelApp.Visible := True;
+
+    Workbook := ExcelApp.Workbooks.Add;
+    Worksheet := Workbook.Worksheets[1];
+
+    for i := 1 to Length(Digits) do
+      Worksheet.Cells[i, 1].Value := Digits[i];
+
+    for i := 1 to Length(Others) do
+      Worksheet.Cells[i, 2].Value := Others[i];
+
+  except
+    on E: Exception do
+      ShowMessage('Ошибка: ' + E.Message);
+  end;
+end;
+
+end.
+
